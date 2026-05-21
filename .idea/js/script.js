@@ -100,24 +100,31 @@ const inputYear   = document.getElementById("input-year");
 let sortAsc = false;
 
 // Affiche les animés dans la page
-function displayItems(items) {
+function displayItems(item) {
 
     // Si aucun résultat, affiche un message
-    if (items.length === 0) {
+    if (item.length === 0) {
         container.innerHTML = '<p class="no-result">Aucun résultat pour cette recherche.</p>';
         return;
     }
 
     // Construit le HTML de toutes les cartes
     let html = "";
-    items.forEach(item => {
+    item.forEach(item => {
+        let etoiles = "⭐";
+        if (item.rating >= 8 && item.rating < 9) {
+            etoiles = "⭐⭐"
+        }
+        else if (item.rating >= 9) {
+            etoiles = "⭐⭐⭐"
+        }
         html += `
             <article class="card" data-id="${item.id}">
                 <img src="${item.image}" alt="${item.name}">
                 <div class="card-body">
                     <h2>${item.name}</h2>
                     <p>${item.theme} — ${item.year}</p>
-                    <span class="rating">${item.rating} ⭐</span>
+                    <span class="rating">${item.rating} ${etoiles}</span>
                     <button class="btn-delete">Supprimer</button>
                 </div>
             </article>
