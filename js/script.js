@@ -74,7 +74,7 @@ let data = [
         theme: "Action",
         rating: 9.0,
         year: 2020,
-        image: "pictures/JJk.jpg"
+        image: "pictures/JJK.jpg"
     },
     {
         id: 10,
