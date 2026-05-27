@@ -2,7 +2,7 @@
   "name": "ProjetAnime",
   "version": "1.0.0",
   "description": "",
-  "main": ".idea/js/script.js",
+  "main": "js/script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
