@@ -17,15 +17,19 @@
 
     <!-- Barre d'outils : recherche + tri (S11) -->
     <div class="toolbar">
+        <!-- Label invisible pour l'accessibilité (S13) -->
+        <label for="search" class="sr-only">Rechercher un animé</label>
         <input type="text" id="search" placeholder="Rechercher un animé...">
-        <button id="btn-sort">Trier par note ↓</button>
+        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
+        <button id="btn-sort" class="btn btn-primary">Trier par note ↓</button>
     </div>
 
-    <!-- Liste des animés (S9) -->
-    <ul id="list"></ul>
+    <!-- Liste des animés (S13 : <div> au lieu de <ul> pour pouvoir insérer un <p>) -->
+    <div id="list"></div>
 
     <!-- Formulaire d'ajout (S12) -->
-    <form id="form-add">
+    <!-- novalidate : désactive la validation HTML5 native, c'est notre JS qui valide (S13) -->
+    <form id="form-add" novalidate>
         <h2>Ajouter un animé</h2>
 
         <div class="form-group">
@@ -57,7 +61,8 @@
             <input type="number" id="input-year" min="1960" max="2026" placeholder="2024">
         </div>
 
-        <button type="submit">Ajouter</button>
+        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
+        <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 
 </main>

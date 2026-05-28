@@ -1,5 +1,5 @@
 // ============================================================
-// Anime Catalogue — js/script.js
+// AnimeCatalogue — js/script.js
 // ============================================================
 
 // Liste de tous les animés
@@ -10,7 +10,7 @@ let data = [
         theme: "Action",
         rating: 9.2,
         year: 2019,
-        image: "pictures/demon slayer.jpg"
+        image: "img/demon slayer.jpg"
     },
     {
         id: 2,
@@ -18,7 +18,7 @@ let data = [
         theme: "Drame",
         rating: 9.8,
         year: 2013,
-        image: "pictures/SNK.jpg"
+        image: "img/SNK.jpg"
     },
     {
         id: 3,
@@ -26,7 +26,7 @@ let data = [
         theme: "Comédie",
         rating: 8.8,
         year: 2015,
-        image: "pictures/OPM.jpg"
+        image: "img/OPM.jpg"
     },
     {
         id: 4,
@@ -34,7 +34,7 @@ let data = [
         theme: "Fantasy",
         rating: 9.1,
         year: 2003,
-        image: "pictures/FMA.jpg"
+        image: "img/FMA.jpg"
     },
     {
         id: 5,
@@ -42,7 +42,7 @@ let data = [
         theme: "Drame",
         rating: 9.0,
         year: 2006,
-        image: "pictures/death note.jpg"
+        image: "img/death note.jpg"
     },
     {
         id: 6,
@@ -50,7 +50,7 @@ let data = [
         theme: "Shonen",
         rating: 10,
         year: 2002,
-        image: "pictures/naruto.png"
+        image: "img/naruto.png"
     },
     {
         id: 7,
@@ -58,7 +58,7 @@ let data = [
         theme: "Science-Fiction",
         rating: 7.5,
         year: 2012,
-        image: "pictures/SAO.jpg"
+        image: "img/SAO.jpg"
     },
     {
         id: 8,
@@ -66,7 +66,7 @@ let data = [
         theme: "Romance",
         rating: 8.9,
         year: 2014,
-        image: "pictures/your lie in april.jpg"
+        image: "img/your lie in april.jpg"
     },
     {
         id: 9,
@@ -74,7 +74,7 @@ let data = [
         theme: "Action",
         rating: 9.0,
         year: 2020,
-        image: "pictures/JJK.jpg"
+        image: "img/JJK.jpg"
     },
     {
         id: 10,
@@ -82,7 +82,7 @@ let data = [
         theme: "Fantasy",
         rating: 9.3,
         year: 2001,
-        image: "pictures/chihiro.jpg"
+        image: "img/chihiro.jpg"
     }
 ];
 
@@ -100,24 +100,25 @@ const inputYear   = document.getElementById("input-year");
 let sortAsc = false;
 
 // Affiche les animés dans la page
-function displayItems(item) {
+function displayItems(items) {
 
-    // Si aucun résultat, affiche un message
-    if (item.length === 0) {
+    // Guard clause (S13) : si aucun résultat, affiche un message et s'arrête
+    if (items.length === 0) {
         container.innerHTML = '<p class="no-result">Aucun résultat pour cette recherche.</p>';
         return;
     }
 
     // Construit le HTML de toutes les cartes
     let html = "";
-    item.forEach(item => {
+    items.forEach(item => {
+        // Détermine le nombre d'étoiles selon la note
         let etoiles = "⭐";
         if (item.rating >= 8 && item.rating < 9) {
-            etoiles = "⭐⭐"
+            etoiles = "⭐⭐";
+        } else if (item.rating >= 9) {
+            etoiles = "⭐⭐⭐";
         }
-        else if (item.rating >= 9) {
-            etoiles = "⭐⭐⭐"
-        }
+
         html += `
             <article class="card" data-id="${item.id}">
                 <img src="${item.image}" alt="${item.name}">
@@ -125,7 +126,8 @@ function displayItems(item) {
                     <h2>${item.name}</h2>
                     <p>${item.theme} — ${item.year}</p>
                     <span class="rating">${item.rating} ${etoiles}</span>
-                    <button class="btn-delete">Supprimer</button>
+                    <!-- .btn .btn-danger pour le style, .btn-delete pour la délégation JS (S14) -->
+                    <button class="btn btn-danger btn-delete">Supprimer</button>
                 </div>
             </article>
         `;
@@ -170,14 +172,17 @@ form.addEventListener("submit", (event) => {
     const rating = Number(inputRating.value);
     const year   = Number(inputYear.value);
 
-    // Vérifie que le nom est rempli
+    // Validation JS (S13) — vérifie le nom
+    // novalidate sur le <form> désactive la validation HTML5 native
+    // c'est donc notre JS qui prend le contrôle complet ici
     if (!name) {
         alert("Le nom est requis.");
-        inputName.focus();
+        inputName.focus(); // Replace le curseur dans le champ problématique
         return;
     }
 
-    // Vérifie que la note est entre 1 et 10
+    // Validation JS (S13) — vérifie que la note est entre 1 et 10
+    // "required" seul ne bloque pas les valeurs comme 0 ou -5
     if (!rating || rating < 1 || rating > 10) {
         alert("La note doit être entre 1 et 10.");
         inputRating.focus();
@@ -186,7 +191,7 @@ form.addEventListener("submit", (event) => {
 
     // Crée le nouvel animé
     const newItem = {
-        id: Date.now(),
+        id: Date.now(),         // ID unique basé sur l'horodatage
         name: name,
         theme: inputTheme.value,
         rating: rating,
@@ -200,13 +205,15 @@ form.addEventListener("submit", (event) => {
 });
 
 // Écoute les clics sur la liste pour détecter un clic sur "Supprimer"
+// Délégation d'événements : un seul listener sur le parent stable (#list)
+// car les cartes sont recréées à chaque refresh()
 container.addEventListener("click", (event) => {
     const btn = event.target.closest(".btn-delete");
     if (!btn) return; // Clic ailleurs → on ignore
 
     // Récupère l'id de la carte cliquée
     const card = btn.closest(".card");
-    const id = Number(card.dataset.id);
+    const id = Number(card.dataset.id); // dataset.id est une string → convertir
 
     if (!confirm("Supprimer cet animé ?")) return;
 
