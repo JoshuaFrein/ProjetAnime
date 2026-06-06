@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<!-- entête -->
 <header>
     <h1>🎌 AnimeCatalogue</h1>
     <p>Ta collection d'animés personnelle</p>
@@ -15,20 +16,29 @@
 
 <main>
 
-    <!-- Barre d'outils : recherche + tri (S11) -->
     <div class="toolbar">
-        <!-- Label invisible pour l'accessibilité (S13) -->
         <label for="search" class="sr-only">Rechercher un animé</label>
         <input type="text" id="search" placeholder="Rechercher un animé...">
-        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
         <button id="btn-sort" class="btn btn-primary">Trier par note ↓</button>
+
+        <!-- menu déroulant pour filtrer par catégorie -->
+        <label for="filter-theme" class="sr-only">Filtrer par thème</label>
+        <select id="filter-theme">
+            <option value="">Tous les thèmes</option>
+            <option value="Action">Action</option>
+            <option value="Aventure">Aventure</option>
+            <option value="Comédie">Comédie</option>
+            <option value="Drame">Drame</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Romance">Romance</option>
+            <option value="Science-Fiction">Science-Fiction</option>
+            <option value="Shonen">Shonen</option>
+        </select>
+
     </div>
 
-    <!-- Liste des animés (S13 : <div> au lieu de <ul> pour pouvoir insérer un <p>) -->
     <div id="list"></div>
 
-    <!-- Formulaire d'ajout (S12) -->
-    <!-- novalidate : désactive la validation HTML5 native, c'est notre JS qui valide (S13) -->
     <form id="form-add" novalidate>
         <h2>Ajouter un animé</h2>
 
@@ -37,6 +47,7 @@
             <input type="text" id="input-name" placeholder="Ex : Demon Slayer" required>
         </div>
 
+        <!-- menu déroulant pour filtrer par catégorie (à l'ajout) -->
         <div class="form-group">
             <label for="input-theme">Thème</label>
             <select id="input-theme">
@@ -61,14 +72,13 @@
             <input type="number" id="input-year" min="1960" max="2026" placeholder="2024">
         </div>
 
-        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
-
 </main>
 
+<!-- pied de page -->
 <footer>
-    <p>AnimeCatalogue — Projet JS C122 © 2026</p>
+    <p>AnimeCatalogue — 122-projet-perso-Joshua-Frein</p>
 </footer>
 
 <script src="js/script.js"></script>

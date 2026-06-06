@@ -14,7 +14,6 @@
     --color-delete-hover: #a02b1f;
 }
 
-/* Supprime les marges et bordures par défaut du navigateur */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -48,7 +47,7 @@ header p {
 }
 
 /* ==============================
-   MAIN — limite la largeur et centre le contenu
+   MAIN
 ============================== */
 main {
     max-width: 1100px;
@@ -57,7 +56,7 @@ main {
 }
 
 /* ==============================
-   BARRE D'OUTILS (recherche + tri)
+   BARRE D'OUTILS
 ============================== */
 .toolbar {
     display: flex;
@@ -66,7 +65,6 @@ main {
     margin-bottom: 1.5rem;
 }
 
-/* Le champ de recherche prend tout l'espace disponible */
 #search {
     padding: 8px 12px;
     border: 1px solid var(--color-border);
@@ -76,15 +74,29 @@ main {
     max-width: 400px;
 }
 
-/* Bordure colorée quand on clique dans le champ */
 #search:focus {
     outline: none;
     border-color: var(--color-btn);
 }
 
+/* AJOUT : style du select de filtre par thème */
+#filter-theme {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--color-btn);
+    color: white;
+    cursor: pointer;
+}
+
+/* AJOUT : couleur au survol du select */
+#filter-theme:hover {
+    background-color: var(--color-btn-hover);
+}
+
 /* ==============================
    GRILLE DE CARTES
-   Crée autant de colonnes que possible (min 280px chacune)
 ============================== */
 #list {
     display: grid;
@@ -100,17 +112,15 @@ main {
     background-color: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    overflow: hidden; /* cache les coins de l'image qui dépassent */
+    overflow: hidden;
     transition: transform 0.2s;
 }
 
-/* La carte monte un peu au survol */
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* L'image remplit toute la carte sans se déformer */
 .card img {
     width: 100%;
     height: 200px;
@@ -138,7 +148,7 @@ main {
 }
 
 /* ==============================
-   MESSAGE "AUCUN RÉSULTAT" (S13)
+   MESSAGE "AUCUN RÉSULTAT"
 ============================== */
 .no-result {
     color: var(--color-text-muted);
@@ -162,7 +172,6 @@ main {
     font-size: 1.3rem;
 }
 
-/* Chaque groupe label + champ empilés verticalement */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -178,7 +187,6 @@ main {
     font-size: 1rem;
 }
 
-/* Bordure colorée quand on clique dans un champ */
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
@@ -186,10 +194,7 @@ main {
 }
 
 /* ==============================
-   BOUTONS — pattern DRY (S14)
-   .btn = base commune à tous les boutons
-   .btn-primary = bleu (ajouter, trier)
-   .btn-danger = rouge (supprimer)
+   BOUTONS
 ============================== */
 .btn {
     padding: 8px 16px;
@@ -203,7 +208,6 @@ main {
     transition: background-color 0.15s ease;
 }
 
-/* Variante bleue : actions positives */
 .btn-primary {
     background-color: var(--color-btn);
 }
@@ -212,7 +216,6 @@ main {
     background-color: var(--color-btn-hover);
 }
 
-/* Variante rouge : actions destructives */
 .btn-danger {
     background-color: var(--color-delete);
 }
@@ -221,16 +224,13 @@ main {
     background-color: var(--color-delete-hover);
 }
 
-/* Positionnement spécifique du bouton supprimer dans la carte */
 .btn-delete {
     margin-top: 8px;
     font-size: 0.85rem;
 }
 
 /* ==============================
-   ACCESSIBILITÉ (S13)
-   Masque visuellement mais reste lisible
-   par les lecteurs d'écran
+   ACCESSIBILITÉ
 ============================== */
 .sr-only {
     position: absolute;
@@ -257,25 +257,17 @@ footer {
 }
 
 /* ==============================
-   RESPONSIVE — tablette (max 768px)
+   RESPONSIVE — tablette
 ============================== */
 @media (max-width: 768px) {
-    header {
-        padding: 1rem;
-    }
-
-    main {
-        padding: 1rem;
-    }
+    header { padding: 1rem; }
+    main { padding: 1rem; }
 }
 
 /* ==============================
-   RESPONSIVE — mobile (max 600px) (S13)
-   Les règles s'appliquent UNIQUEMENT
-   si la largeur <= 600px
+   RESPONSIVE — mobile
 ============================== */
 @media (max-width: 600px) {
-    /* Empile la recherche et le bouton verticalement */
     .toolbar {
         flex-direction: column;
     }
@@ -285,6 +277,11 @@ footer {
     }
 
     #btn-sort {
+        width: 100%;
+    }
+
+    /* AJOUT : le select prend toute la largeur sur mobile */
+    #filter-theme {
         width: 100%;
     }
 
