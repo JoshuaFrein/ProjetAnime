@@ -25,6 +25,9 @@ J'ai repris et adapté le code vu en cours, en m'aidant de Claude pour
 identifier et corriger les erreurs, ajouter des commentaires clairs et
 résoudre les problèmes rencontrés.
 
+Claude m'a énormément aidé, notamment pour le CSS où il y avait beaucoup de tâches répétitives, ça m'a permis de rendre 
+le site plus joli assez facilement.
+
 Ressources utilisées :
 - [Plan du cours C122](https://devjs.ch/cours/122/plan.html)
 - [Claude (Anthropic)](https://claude.ai)

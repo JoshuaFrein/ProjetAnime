@@ -3,17 +3,21 @@
 ============================== */
 :root {
     --color-primary: #e63946;
-    --color-bg: #f5f5f5;
-    --color-card: #ffffff;
-    --color-text: #222222;
-    --color-text-muted: #666666;
-    --color-border: #dddddd;
+    --color-primary-dark: #b71c2a;       /* AJOUT : version foncée pour les ombres du titre */
+    --color-bg: #0d0d1a;
+    --color-card: #1a1a2e;
+    --color-text: #f0f0f0;
+    --color-text-muted: #9090b0;
+    --color-border: #2a2a4a;
     --color-btn: #4a90d9;
     --color-btn-hover: #357ab8;
     --color-delete: #c0392b;
     --color-delete-hover: #a02b1f;
+    --color-accent: #f4a261;             /* AJOUT : couleur dorée pour la note et les accents */
+    --color-glow: rgba(230, 57, 70, 0.4);/* AJOUT : couleur de lueur pour les effets lumineux */
 }
 
+/* Supprime les marges et bordures par défaut du navigateur */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -21,33 +25,128 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'Nunito', sans-serif;
     background-color: var(--color-bg);
     color: var(--color-text);
     min-height: 100vh;
     line-height: 1.6;
+
+    /* AJOUT : grille subtile en arrière-plan pour l'effet manga */
+    background-image:
+            linear-gradient(rgba(230, 57, 70, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(230, 57, 70, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* ==============================
+   DÉCORATIONS LATÉRALES (S13)
+   AJOUT : barres lumineuses sur les côtés de la page
+   position: fixed pour qu'elles restent visibles au scroll
+   pointer-events: none pour ne pas bloquer les clics
+============================== */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Barre rouge à gauche */
+body::before {
+    left: 0;
+    background: linear-gradient(to bottom,
+    var(--color-primary),
+    transparent 20%,
+    transparent 80%,
+    var(--color-primary)
+    );
+    box-shadow: 0 0 20px var(--color-glow);
+}
+
+/* Barre rouge à droite */
+body::after {
+    right: 0;
+    background: linear-gradient(to bottom,
+    var(--color-primary),
+    transparent 20%,
+    transparent 80%,
+    var(--color-primary)
+    );
+    box-shadow: 0 0 20px var(--color-glow);
 }
 
 /* ==============================
    HEADER
 ============================== */
 header {
-    background-color: var(--color-primary);
+    background: linear-gradient(135deg, #1a0005 0%, #2d0010 40%, #1a0020 100%);
     color: white;
-    padding: 1.5rem 2rem;
+    padding: 0;
+    position: relative;
+    overflow: hidden; /* cache les cercles décoratifs qui dépassent */
+    border-bottom: 2px solid var(--color-primary);
+    box-shadow: 0 4px 30px var(--color-glow);
+}
+
+/* AJOUT : cercle lumineux rouge en haut à droite du header */
+header::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(230, 57, 70, 0.25) 0%, transparent 70%);
+    top: -150px;
+    right: -100px;
+    pointer-events: none;
+}
+
+/* AJOUT : cercle lumineux bleu en bas à gauche du header */
+header::after {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(74, 144, 217, 0.15) 0%, transparent 70%);
+    bottom: -80px;
+    left: 10%;
+    pointer-events: none;
+}
+
+/* AJOUT : conteneur interne qui limite la largeur et passe au-dessus des cercles */
+.header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    position: relative;
+    z-index: 1; /* passe au-dessus des ::before et ::after */
 }
 
 header h1 {
-    font-size: 2rem;
+    /* AJOUT : police Bangers (style manga) chargée depuis Google Fonts */
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    letter-spacing: 3px;
+    /* AJOUT : double ombre — lueur rouge + décalage foncé façon BD */
+    text-shadow:
+            0 0 20px rgba(230, 57, 70, 0.8),
+            3px 3px 0 var(--color-primary-dark);
+    color: white;
 }
 
 header p {
     font-size: 1rem;
-    opacity: 0.85;
+    opacity: 0.75;
+    margin-top: 4px;
+    letter-spacing: 1px;
+    color: var(--color-accent);
 }
 
 /* ==============================
-   MAIN
+   MAIN — limite la largeur et centre le contenu
 ============================== */
 main {
     max-width: 1100px;
@@ -56,38 +155,53 @@ main {
 }
 
 /* ==============================
-   BARRE D'OUTILS
+   BARRE D'OUTILS (recherche + tri + filtre)
 ============================== */
 .toolbar {
     display: flex;
     gap: 1rem;
     align-items: center;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap; /* AJOUT : permet au compteur de passer à la ligne si besoin */
 }
 
+/* Le champ de recherche prend tout l'espace disponible */
 #search {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
     flex: 1;
     max-width: 400px;
+    background-color: var(--color-card);
+    color: var(--color-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+#search::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Bordure colorée quand on clique dans le champ */
 #search:focus {
     outline: none;
-    border-color: var(--color-btn);
+    border-color: var(--color-primary);
+    /* AJOUT : lueur rouge au focus */
+    box-shadow: 0 0 12px rgba(230, 57, 70, 0.3);
 }
 
 /* AJOUT : style du select de filtre par thème */
 #filter-theme {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
     background-color: var(--color-btn);
     color: white;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 /* AJOUT : couleur au survol du select */
@@ -95,8 +209,17 @@ main {
     background-color: var(--color-btn-hover);
 }
 
+/* AJOUT : compteur de résultats affiché à droite de la toolbar (S13) */
+.result-count {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    font-style: italic;
+}
+
 /* ==============================
    GRILLE DE CARTES
+   Crée autant de colonnes que possible (min 280px chacune)
 ============================== */
 #list {
     display: grid;
@@ -111,20 +234,50 @@ main {
 .card {
     background-color: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.2s;
+    border-radius: 12px;
+    overflow: hidden; /* cache les coins de l'image qui dépassent */
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative; /* AJOUT : nécessaire pour positionner le ::before */
 }
 
+/* AJOUT : ligne dégradée rouge→bleu en haut de la carte, visible au survol */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-btn));
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+/* La carte monte un peu au survol */
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(230, 57, 70, 0.2);
+    border-color: var(--color-primary); /* AJOUT : bordure rouge au survol */
 }
 
+/* AJOUT : rend la ligne du haut visible quand la carte est survolée */
+.card:hover::before {
+    opacity: 1;
+}
+
+/* L'image remplit toute la carte sans se déformer */
 .card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    /* AJOUT : légèrement assombrie pour s'intégrer au thème sombre */
+    filter: brightness(0.9);
+    transition: filter 0.25s;
+}
+
+/* AJOUT : image à pleine luminosité au survol */
+.card:hover img {
+    filter: brightness(1);
 }
 
 .card-body {
@@ -134,6 +287,7 @@ main {
 .card-body h2 {
     font-size: 1.1rem;
     margin-bottom: 4px;
+    font-weight: 700;
 }
 
 .card-body p {
@@ -144,11 +298,38 @@ main {
 
 .rating {
     font-weight: bold;
-    color: var(--color-primary);
+    color: var(--color-accent); /* AJOUT : couleur dorée pour la note */
+    font-size: 1rem;
 }
 
 /* ==============================
-   MESSAGE "AUCUN RÉSULTAT"
+   BADGE DE THÈME (S13)
+   AJOUT : pastille colorée affichée sur chaque carte selon la catégorie
+   Une couleur différente par thème pour identifier visuellement les animés
+============================== */
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px; /* arrondi complet → forme pilule */
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Une règle par thème : fond semi-transparent + texte + bordure de la même couleur */
+.badge-Action         { background: rgba(231, 76, 60, 0.25);  color: #e74c3c; border: 1px solid #e74c3c; }
+.badge-Aventure       { background: rgba(243, 156, 18, 0.25); color: #f39c12; border: 1px solid #f39c12; }
+.badge-Comédie        { background: rgba(46, 204, 113, 0.25); color: #2ecc71; border: 1px solid #2ecc71; }
+.badge-Drame          { background: rgba(155, 89, 182, 0.25); color: #9b59b6; border: 1px solid #9b59b6; }
+.badge-Fantasy        { background: rgba(26, 188, 156, 0.25); color: #1abc9c; border: 1px solid #1abc9c; }
+.badge-Romance        { background: rgba(255, 105, 180, 0.25);color: #ff69b4; border: 1px solid #ff69b4; }
+.badge-Science-Fiction{ background: rgba(74, 144, 217, 0.25); color: #4a90d9; border: 1px solid #4a90d9; }
+.badge-Shonen         { background: rgba(230, 126, 34, 0.25); color: #e67e22; border: 1px solid #e67e22; }
+
+/* ==============================
+   MESSAGE "AUCUN RÉSULTAT" (S13)
 ============================== */
 .no-result {
     color: var(--color-text-muted);
@@ -162,16 +343,22 @@ main {
 #form-add {
     background-color: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1.5rem;
     max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 #form-add h2 {
     margin-bottom: 1rem;
     font-size: 1.3rem;
+    /* AJOUT : même police Bangers que le titre du header */
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    color: var(--color-accent);
 }
 
+/* Chaque groupe label + champ empilés verticalement */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -179,58 +366,92 @@ main {
     margin-bottom: 12px;
 }
 
-.form-group input,
-.form-group select {
-    padding: 8px;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    font-size: 1rem;
+/* AJOUT : style des labels du formulaire */
+.form-group label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
+    background-color: #0d0d1a; /* fond légèrement plus foncé que la carte */
+    color: var(--color-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Bordure colorée quand on clique dans un champ */
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: var(--color-btn);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.25); /* AJOUT : lueur rouge au focus */
 }
 
 /* ==============================
-   BOUTONS
+   BOUTONS — pattern DRY (S14)
+   .btn = base commune à tous les boutons
+   .btn-primary = bleu (ajouter, trier)
+   .btn-danger = rouge (supprimer)
 ============================== */
 .btn {
-    padding: 8px 16px;
+    padding: 10px 18px;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    letter-spacing: 0.5px;
 }
 
+/* AJOUT : légère animation d'enfoncement au clic */
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* Variante bleue : actions positives */
 .btn-primary {
     background-color: var(--color-btn);
+    box-shadow: 0 2px 10px rgba(74, 144, 217, 0.3); /* AJOUT : lueur bleue */
 }
 
 .btn-primary:hover {
     background-color: var(--color-btn-hover);
+    box-shadow: 0 4px 16px rgba(74, 144, 217, 0.4);
 }
 
+/* Variante rouge : actions destructives */
 .btn-danger {
     background-color: var(--color-delete);
+    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3); /* AJOUT : lueur rouge */
 }
 
 .btn-danger:hover {
     background-color: var(--color-delete-hover);
 }
 
+/* Positionnement spécifique du bouton supprimer dans la carte */
 .btn-delete {
-    margin-top: 8px;
-    font-size: 0.85rem;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    padding: 6px 12px;
 }
 
 /* ==============================
-   ACCESSIBILITÉ
+   ACCESSIBILITÉ (S13)
+   Masque visuellement mais reste lisible
+   par les lecteurs d'écran
 ============================== */
 .sr-only {
     position: absolute;
@@ -257,19 +478,23 @@ footer {
 }
 
 /* ==============================
-   RESPONSIVE — tablette
+   RESPONSIVE — tablette (max 768px)
 ============================== */
 @media (max-width: 768px) {
-    header { padding: 1rem; }
+    header h1 { font-size: 2.2rem; }
     main { padding: 1rem; }
 }
 
 /* ==============================
-   RESPONSIVE — mobile
+   RESPONSIVE — mobile (max 600px) (S13)
+   Les règles s'appliquent UNIQUEMENT
+   si la largeur <= 600px
 ============================== */
 @media (max-width: 600px) {
+    /* Empile la recherche et le bouton verticalement */
     .toolbar {
         flex-direction: column;
+        align-items: stretch;
     }
 
     #search {

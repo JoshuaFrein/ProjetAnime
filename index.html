@@ -4,61 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnimeCatalogue</title>
+    <!-- AJOUT : police Bangers (style manga) + Nunito pour le texte courant -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <!-- entête -->
 <header>
-    <h1>🎌 AnimeCatalogue</h1>
-    <p>Ta collection d'animés personnelle</p>
+    <!-- AJOUT : .header-inner pour limiter la largeur et passer au-dessus des cercles décoratifs -->
+    <div class="header-inner">
+        <h1>🎌 AnimeCatalogue</h1>
+        <p>Ta collection d'animés personnelle</p>
+    </div>
 </header>
 
 <main>
 
+    <!-- Barre d'outils : recherche + tri + filtre (S11) -->
     <div class="toolbar">
+        <!-- Label invisible pour l'accessibilité (S13) -->
         <label for="search" class="sr-only">Rechercher un animé</label>
-        <input type="text" id="search" placeholder="Rechercher un animé...">
+        <input type="text" id="search" placeholder="🔍 Rechercher un animé...">
+        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
         <button id="btn-sort" class="btn btn-primary">Trier par note ↓</button>
 
-        <!-- menu déroulant pour filtrer par catégorie -->
+        <!-- AJOUT : menu déroulant pour filtrer par thème -->
         <label for="filter-theme" class="sr-only">Filtrer par thème</label>
         <select id="filter-theme">
-            <option value="">Tous les thèmes</option>
-            <option value="Action">Action</option>
-            <option value="Aventure">Aventure</option>
-            <option value="Comédie">Comédie</option>
-            <option value="Drame">Drame</option>
-            <option value="Fantasy">Fantasy</option>
-            <option value="Romance">Romance</option>
-            <option value="Science-Fiction">Science-Fiction</option>
-            <option value="Shonen">Shonen</option>
+            <option value="">🗂 Tous les thèmes</option>
+            <option value="Action">⚔️ Action</option>
+            <option value="Aventure">🧭 Aventure</option>
+            <option value="Comédie">😂 Comédie</option>
+            <option value="Drame">🎭 Drame</option>
+            <option value="Fantasy">🧙 Fantasy</option>
+            <option value="Romance">💕 Romance</option>
+            <option value="Science-Fiction">🚀 Science-Fiction</option>
+            <option value="Shonen">💥 Shonen</option>
         </select>
 
+        <!-- AJOUT : compteur de résultats mis à jour par le JS (S13) -->
+        <span id="result-count" class="result-count"></span>
     </div>
 
+    <!-- Liste des animés (S13 : <div> au lieu de <ul> pour pouvoir insérer un <p>) -->
     <div id="list"></div>
 
+    <!-- Formulaire d'ajout (S12) -->
+    <!-- novalidate : désactive la validation HTML5 native, c'est notre JS qui valide (S13) -->
     <form id="form-add" novalidate>
-        <h2>Ajouter un animé</h2>
+        <h2>➕ Ajouter un animé</h2>
 
         <div class="form-group">
             <label for="input-name">Nom</label>
             <input type="text" id="input-name" placeholder="Ex : Demon Slayer" required>
         </div>
 
-        <!-- menu déroulant pour filtrer par catégorie (à l'ajout) -->
+        <!-- menu déroulant pour choisir le thème à l'ajout -->
         <div class="form-group">
             <label for="input-theme">Thème</label>
             <select id="input-theme">
-                <option value="Action">Action</option>
-                <option value="Aventure">Aventure</option>
-                <option value="Comédie">Comédie</option>
-                <option value="Drame">Drame</option>
-                <option value="Fantasy">Fantasy</option>
-                <option value="Romance">Romance</option>
-                <option value="Science-Fiction">Science-Fiction</option>
-                <option value="Shonen">Shonen</option>
+                <option value="Action">⚔️ Action</option>
+                <option value="Aventure">🧭 Aventure</option>
+                <option value="Comédie">😂 Comédie</option>
+                <option value="Drame">🎭 Drame</option>
+                <option value="Fantasy">🧙 Fantasy</option>
+                <option value="Romance">💕 Romance</option>
+                <option value="Science-Fiction">🚀 Science-Fiction</option>
+                <option value="Shonen">💥 Shonen</option>
             </select>
         </div>
 
@@ -72,6 +86,7 @@
             <input type="number" id="input-year" min="1960" max="2026" placeholder="2024">
         </div>
 
+        <!-- Deux classes : .btn pour la base, .btn-primary pour la couleur (S14) -->
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 </main>
